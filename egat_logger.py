@@ -51,7 +51,7 @@ def main():
         url = "https://www.sothailand.com/sysgen" 
         driver.get(url)
         print("กำลังโหลดหน้าเว็บ กฟผ...")
-        time.sleep(12) 
+        time.sleep(30) 
         
         now = datetime.now()
         timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
