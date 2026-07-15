@@ -53,7 +53,7 @@ def main():
         url = "https://www.sothailand.com/sysgen" 
         driver.get(url)
         print("กำลังโหลดหน้าเว็บ กฟผ...")
-        try:
+    try:
         url = "https://www.sothailand.com/sysgen" 
         driver.get(url)
         print("กำลังโหลดหน้าเว็บ กฟผ...")
