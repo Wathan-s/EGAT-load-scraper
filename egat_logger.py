@@ -32,6 +32,7 @@ def main():
     os.makedirs("evidence", exist_ok=True)
     
     chrome_options = Options()
+    chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--headless=new") # แนะนำให้เติม =new เข้าไปด้วย
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
@@ -52,7 +53,22 @@ def main():
         url = "https://www.sothailand.com/sysgen" 
         driver.get(url)
         print("กำลังโหลดหน้าเว็บ กฟผ...")
-        time.sleep(30) 
+        try:
+        url = "https://www.sothailand.com/sysgen" 
+        driver.get(url)
+        print("กำลังโหลดหน้าเว็บ กฟผ...")
+        
+        # --- ระบบรอแบบฉลาด (Smart Wait) ---
+        page_text = ""
+        for i in range(20): # เช็คทุก 3 วิ (รวมสูงสุด 60 วินาที)
+            time.sleep(3)
+            page_text = driver.find_element(By.TAG_NAME, "body").text
+            if "MW" in page_text: 
+                print(f"✅ กราฟโหลดเสร็จแล้ว! ใช้เวลาไป { (i+1)*3 } วินาที")
+                time.sleep(2) # รอให้ตัวเลขนิ่งอีก 2 วินาที
+                break
+            print(f"กำลังรอหน้าเว็บโหลด... ({ (i+1)*3 } วินาที)")
+        # ---------------------------------- 
         
         now = datetime.now()
         timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
@@ -73,7 +89,7 @@ def main():
 
             # ใช้ Regex ค้นหาตัวเลขที่มีคำว่า MW ตามหลัง (เช่น 29,765.0 MW)
             # หน้าเว็บ กฟผ. ตัวเลขแรกสุดมักจะเป็น "ค่าปัจจุบัน"
-            matches = re.findall(r'([\d,]+\.\d+)\s*MW', page_text)
+            matches = re.findall(r'([\d,]+(?:\.\d+)?)\s*MW', page_text)
             
             if matches:
                 system_load = matches[0] # ดึงตัวเลขแรกที่เจอมาใช้
