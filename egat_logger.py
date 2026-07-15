@@ -64,8 +64,8 @@ def main():
         
         # 3. ดึงตัวเลขจากเว็บ (อย่าลืมตรวจสอบ XPath บนเว็บจริง)
         try:
-            system_load = driver.find_element(By.XPATH, "/html/body/div[2]/div/aside/div[3]/div[3]/div[1]/div[2]/span[1]").text
-            generation_mix = driver.find_element(By.XPATH, "//div[@id='gen-mix']").text
+            system_load = driver.find_element(By.XPATH, "/html/body/div[2]/div/aside/div[2]/div[3]/div[1]/div/span[1]").text
+            generation_mix = driver.find_element(By.XPATH, "/html/body/div[2]/div/aside/div[2]/div[3]/div[1]/div/span[1]").text
         except Exception:
             system_load = "N/A (ตรวจสอบ XPath)"
             generation_mix = "N/A"
