@@ -1,4 +1,5 @@
 import os
+import re
 import csv
 import time
 import requests
@@ -62,12 +63,27 @@ def main():
         driver.save_screenshot(screenshot_name)
         print(f"บันทึกภาพสกรีนช็อตสำเร็จ: {screenshot_name}")
         
-        # 3. ดึงตัวเลขจากเว็บ (อย่าลืมตรวจสอบ XPath บนเว็บจริง)
+        # 3. ใช้เทคนิคกวาดตัวหนังสือทั้งหน้าจอ (ทิ้ง XPath)
         try:
-            system_load = driver.find_element(By.XPATH, '/html/body/div[2]/div/aside/div[2]/div[3]/div[1]/div/span[1]').text
-            generation_mix = driver.find_element(By.XPATH, '/html/body/div[2]/div/aside/div[2]/div[3]/div[1]/div/span[1]').text
-        except Exception:
-            system_load = "N/A (ตรวจสอบ XPath)"
+            # ดึงตัวอักษรทั้งหมดที่โชว์บนจอ
+            page_text = driver.find_element(By.TAG_NAME, "body").text
+            print("--- ข้อความที่บอทอ่านได้บนจอ ---")
+            print(page_text) 
+            print("------------------------------")
+
+            # ใช้ Regex ค้นหาตัวเลขที่มีคำว่า MW ตามหลัง (เช่น 29,765.0 MW)
+            # หน้าเว็บ กฟผ. ตัวเลขแรกสุดมักจะเป็น "ค่าปัจจุบัน"
+            matches = re.findall(r'([\d,]+\.\d+)\s*MW', page_text)
+            
+            if matches:
+                system_load = matches[0] # ดึงตัวเลขแรกที่เจอมาใช้
+            else:
+                system_load = "N/A (หาตัวเลขไม่เจอ)"
+                
+            generation_mix = "N/A" # เว้นไว้ก่อนเพื่อให้รันผ่าน
+            
+        except Exception as ex:
+            system_load = f"Error: {ex}"
             generation_mix = "N/A"
             
         # 4. ดึงสภาพอากาศ
