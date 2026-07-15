@@ -49,6 +49,12 @@ def main():
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
     
+    # --- เพิ่ม 2 บรรทัดนี้เพื่อหลอกให้เบราว์เซอร์คิดว่าอยู่ประเทศไทย ---
+    tz_params = {'timezoneId': 'Asia/Bangkok'}
+    driver.execute_cdp_cmd('Emulation.setTimezoneOverride', tz_params)
+    # --------------------------------------------------------
+    
+    
     try:
         url = "https://www.sothailand.com/sysgen" 
         driver.get(url)
