@@ -11,7 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def get_weather(api_key, city="Bangkok"):
     if not api_key:
-        return "N/A", "N/A", "N/A", "No API Key"
+        return "N/A", "N/A", "N/A", "N/A", 0
     url = f"http://api.openweathermap.org/data/2.5/weather?q={city},th&appid={api_key}&units=metric&lang=th"
     try:
         response = requests.get(url)
@@ -19,11 +19,20 @@ def get_weather(api_key, city="Bangkok"):
         temp = f'{data["main"]["temp"]} °C'
         humidity = f'{data["main"]["humidity"]} %'
         weather_desc = data["weather"][0]["description"]
-        clouds = f'{data.get("clouds", {}).get("all", 0)} %' # ดึงค่าปริมาณเมฆ
-        return temp, humidity, weather_desc, clouds
+        clouds = f'{data.get("clouds", {}).get("all", 0)} %'
+        
+        # --- เช็กว่าตอนนี้กลางวันหรือกลางคืน ---
+        current_time = data.get("dt", 0)
+        sunrise = data.get("sys", {}).get("sunrise", 0)
+        sunset = data.get("sys", {}).get("sunset", 0)
+        
+        # ถ้าเวลาปัจจุบันอยู่ระหว่างพระอาทิตย์ขึ้นและตก ให้เป็น 1 (กลางวัน) นอกนั้นเป็น 0 (กลางคืน)
+        daylight_factor = 1 if sunrise <= current_time <= sunset else 0
+        
+        return temp, humidity, weather_desc, clouds, daylight_factor
     except Exception as e:
         print(f"เกิดข้อผิดพลาดในการดึงสภาพอากาศ: {e}")
-        return "N/A", "N/A", "N/A", "N/A"
+        return "N/A", "N/A", "N/A", "N/A", 0
 
 def main():
     print("--- เริ่มต้นระบบบันทึกข้อมูล EGAT & Weather ---")
@@ -87,6 +96,7 @@ def main():
             "humidity": humidity,
             "weather": weather_desc,
             "clouds": clouds,
+            "daylight_factor": daylight_factor, # เพิ่มตัวแปรนี้เข้าไป
             "image_ref": screenshot_name
         }
         
