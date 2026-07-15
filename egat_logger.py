@@ -48,7 +48,7 @@ def main():
     driver = webdriver.Chrome(service=service, options=chrome_options)
     
     try:
-        url = "https://www.egat.co.th/home/power-status-realtime/" 
+        url = "https://www.sothailand.com/sysgen" 
         driver.get(url)
         print("กำลังโหลดหน้าเว็บ กฟผ...")
         time.sleep(12) 
@@ -64,7 +64,7 @@ def main():
         
         # 3. ดึงตัวเลขจากเว็บ (อย่าลืมตรวจสอบ XPath บนเว็บจริง)
         try:
-            system_load = driver.find_element(By.XPATH, "//span[@id='sys-load']").text
+            system_load = driver.find_element(By.XPATH, "/html/body/div[2]/div/aside/div[3]/div[3]/div[1]/div[2]/span[1]").text
             generation_mix = driver.find_element(By.XPATH, "//div[@id='gen-mix']").text
         except Exception:
             system_load = "N/A (ตรวจสอบ XPath)"
