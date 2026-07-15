@@ -84,7 +84,7 @@ def main():
         print("กำลังส่งข้อมูลเข้า Google Sheets...")
         # ========================================================
         # 🚨 เอาลิงก์ Web App URL ของคุณมาวางแทนที่ลิงก์ด้านล่างนี้ครับ 🚨
-        sheet_url = "https://script.google.com/macros/s/xxxxxxxxx/exec" 
+        sheet_url = "https://script.google.com/macros/s/AKfycbzLIK7NeWatf8LFpZ2UxTZEiFuZ8PWJtZJAETR0RUTZJo3dIeyB1qgRXynaLXcVgbc/exec" 
         # ========================================================
         
         payload = {
