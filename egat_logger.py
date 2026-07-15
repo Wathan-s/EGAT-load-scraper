@@ -81,8 +81,8 @@ def main():
         except:
             system_load = "N/A"
             
-        # ดึงสภาพอากาศ + ความชื้น + ปริมาณเมฆ
-        temp, humidity, weather_desc, clouds = get_weather(weather_api_key, "Bangkok")
+        # ดึงสภาพอากาศ + ความชื้น + ปริมาณเมฆ + Daylight Factor
+        temp, humidity, weather_desc, clouds, daylight_factor = get_weather(weather_api_key, "Bangkok")
         
         # ========================================================
         sheet_url = "https://script.google.com/macros/s/AKfycbx4ujG3LIxvCYmAx783hNLAERGR1MVpQNkNVzvUTvPLYVvJn2gF5uQp2oBGDOAFAbE/exec" # ใส่ลิงก์ของคุณที่นี่
