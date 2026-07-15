@@ -76,7 +76,7 @@ def main():
         temp, humidity, weather_desc, clouds = get_weather(weather_api_key, "Bangkok")
         
         # ========================================================
-        sheet_url = "https://script.google.com/macros/s/AKfycbzk_gwOL6bot_LwtR1lfzS5wARiCbrcnxteOJb7GyK0Cxr-k0Lvb9ojU3mYCTMR5hY/exec" # ใส่ลิงก์ของคุณที่นี่
+        sheet_url = "https://script.google.com/macros/s/AKfycbzQgjqtlEGEsb3wlY_O0oFvnJ0jQEWbaqes3tnxFMm36YMkZi14mhHWZzqi_RQ8Ca8/exec" # ใส่ลิงก์ของคุณที่นี่
         # ========================================================
         
         payload = {
