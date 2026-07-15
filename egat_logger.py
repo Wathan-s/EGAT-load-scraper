@@ -74,17 +74,17 @@ def main():
         driver.save_screenshot(screenshot_name)
         print(f"บันทึกภาพสกรีนช็อตสำเร็จ: {screenshot_name}")
         
-        # 3. ใช้ Regex หาตัวเลข
+        # 3. ใช้ Regex หาตัวเลข (ล็อกเป้าหมายเฉพาะค่าปัจจุบัน)
         try:
             print("--- ข้อความที่บอทอ่านได้บนจอ ---")
             print(page_text) 
             print("------------------------------")
 
-            # หาตัวเลขที่มี MW ตามหลัง (รองรับทั้งแบบมีและไม่มีทศนิยม)
-            matches = re.findall(r'([\d,]+(?:\.\d+)?)\s*MW', page_text)
+            # ล็อกเป้าหมาย: หาตัวเลขที่อยู่ติดกับคำว่า "ค่าปัจจุบัน" เท่านั้น
+            match = re.search(r'ค่าปัจจุบัน\s*([\d,]+(?:\.\d+)?)\s*MW', page_text)
             
-            if matches:
-                system_load = matches[0]
+            if match:
+                system_load = match.group(1) # ดึงตัวเลขที่อยู่ในวงเล็บของ Regex มาใช้
             else:
                 system_load = "N/A (หาตัวเลขไม่เจอ)"
                 
