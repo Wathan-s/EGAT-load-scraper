@@ -54,8 +54,8 @@ def main():
     driver.execute_cdp_cmd('Emulation.setTimezoneOverride', tz_params)
     # --------------------------------------------------------
     
-    
     try:
+        # 1. ดึงข้อมูลและแคปจอ EGAT
         url = "https://www.sothailand.com/sysgen" 
         driver.get(url)
         
@@ -87,13 +87,23 @@ def main():
         except:
             system_load = "N/A"
             
-        # ดึงสภาพอากาศ + ความชื้น + ปริมาณเมฆ + Daylight Factor 
+        # ========================================================
+        # 2. เพิ่มใหม่: ไปหน้าเว็บสภาพอากาศและแคปจอเป็นหลักฐาน
+        # ========================================================
+        print("กำลังบันทึกภาพหน้าเว็บสภาพอากาศ...")
+        weather_evidence_url = "https://openweathermap.org/city/1138958"
+        driver.get(weather_evidence_url)
+        time.sleep(5) # รอหน้าเว็บโหลดกราฟิก
+        weather_screenshot_name = f"evidence/weather_capture_{filename_time}.png"
+        driver.save_screenshot(weather_screenshot_name)
+        # ========================================================
+
+        # ดึงสภาพอากาศ (ตัวอักษร)
         temp, humidity, weather_desc, clouds, daylight_factor = get_weather(weather_api_key, "Bangkok") 
         
-        # ========================================================
-        sheet_url = "https://script.google.com/macros/s/AKfycbzIMl69YLwUdUyU6zqebJFaAOYZZ8x-fPxo2MLvHYYdT2SmXt3Vn5e7E2HDquxSYg/exec" # ใส่ลิงก์ของคุณที่นี่
-        # ========================================================
+        sheet_url = "https://script.google.com/macros/s/AKfycbzIMl69YLwUdUyU6zqebJFaAOYZZ8x-fPxo2MLvHYYdT2SmXt3Vn5e7E2HDquxSYg/exec"
         
+        # 3. อัปเดต Payload เพิ่ม weather_image_ref
         payload = {
             "timestamp": timestamp,
             "day_of_week": day_of_week,
@@ -103,10 +113,10 @@ def main():
             "weather": weather_desc,
             "clouds": clouds,
             "daylight_factor": daylight_factor,
-            "image_ref": screenshot_name
+            "image_ref": screenshot_name,
+            "weather_image_ref": weather_screenshot_name # <-- เพิ่มบรรทัดนี้เข้ามา
         }
         
-        # เพิ่มการรับค่า response และดักจับ Status Code
         response = requests.post(sheet_url, json=payload)
         
         if response.status_code in [200, 201]:
