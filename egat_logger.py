@@ -102,12 +102,18 @@ def main():
             "humidity": humidity,
             "weather": weather_desc,
             "clouds": clouds,
-            "daylight_factor": daylight_factor, # เพิ่มตัวแปรนี้เข้าไป
+            "daylight_factor": daylight_factor,
             "image_ref": screenshot_name
         }
         
-        requests.post(sheet_url, json=payload)
-        print("✅ ส่งข้อมูลเข้า Google Sheets สำเร็จ!")
+        # เพิ่มการรับค่า response และดักจับ Status Code
+        response = requests.post(sheet_url, json=payload)
+        
+        if response.status_code in [200, 201]:
+            print(f"✅ ส่งข้อมูลเข้า Google Sheets สำเร็จ! (Google ตอบกลับ: {response.text})")
+        else:
+            print(f"❌ ส่งข้อมูลล้มเหลว! HTTP Status: {response.status_code}")
+            print(f"รายละเอียด Error: {response.text}")
             
     except Exception as e:
         print(f"Error: {e}")
