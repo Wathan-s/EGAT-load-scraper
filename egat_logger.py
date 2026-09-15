@@ -91,15 +91,16 @@ def main():
         # 2. เพิ่มใหม่: ไปหน้าเว็บสภาพอากาศและแคปจอเป็นหลักฐาน
         # ========================================================
         print("กำลังบันทึกภาพหน้าเว็บสภาพอากาศ...")
-        weather_evidence_url = "https://openweathermap.org/city/1138958"
+        # เปลี่ยนเป็นรหัสเมืองเชียงใหม่
+        weather_evidence_url = "https://openweathermap.org/city/1153671"
         driver.get(weather_evidence_url)
         time.sleep(5) # รอหน้าเว็บโหลดกราฟิก
         weather_screenshot_name = f"evidence/weather_capture_{filename_time}.png"
         driver.save_screenshot(weather_screenshot_name)
         # ========================================================
 
-        # ดึงสภาพอากาศ (ตัวอักษร)
-        temp, humidity, weather_desc, clouds, daylight_factor = get_weather(weather_api_key, "Bangkok") 
+        # ดึงสภาพอากาศของเชียงใหม่ (ตัวอักษร)
+        temp, humidity, weather_desc, clouds, daylight_factor = get_weather(weather_api_key, "Chiang Mai") 
         
         sheet_url = "https://script.google.com/macros/s/AKfycbzIMl69YLwUdUyU6zqebJFaAOYZZ8x-fPxo2MLvHYYdT2SmXt3Vn5e7E2HDquxSYg/exec"
         
@@ -114,7 +115,7 @@ def main():
             "clouds": clouds,
             "daylight_factor": daylight_factor,
             "image_ref": screenshot_name,
-            "weather_image_ref": weather_screenshot_name # <-- เพิ่มบรรทัดนี้เข้ามา
+            "weather_image_ref": weather_screenshot_name 
         }
         
         response = requests.post(sheet_url, json=payload)
