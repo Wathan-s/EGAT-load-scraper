@@ -87,7 +87,7 @@ def main():
         except:
             system_load = "N/A"
             
-        # ดึงสภาพอากาศ + ความชื้น + ปริมาณเมฆ + Daylight Factor
+        # ดึงสภาพอากาศ + ความชื้น + ปริมาณเมฆ + Daylight Factor 
         temp, humidity, weather_desc, clouds, daylight_factor = get_weather(weather_api_key, "Bangkok")
         
         # ========================================================
