@@ -3,7 +3,7 @@ name: EGAT & Weather Data Scraper (CSV)
 on:
   schedule:
     # รันทุกๆ 1 ชั่วโมง (นาทีที่ 0 ของทุกชั่วโมง)
-    - cron: '0 * * * *'
+    - cron: '17 * * * *'
   workflow_dispatch:
 
 # เปิดสิทธิ์ให้ Action สามารถ Commit ไฟล์กลับเข้า Repo ได้
